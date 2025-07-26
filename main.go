@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -27,8 +26,6 @@ func main() {
 	}
 }
 
-var ErrNoPath = errors.New("path required")
-
 func execInput(input string) error {
 	input = strings.TrimSuffix(input, "\n")
 
@@ -36,11 +33,18 @@ func execInput(input string) error {
 
 	switch args[0] {
 	case "cd":
+		var path string
 		if len(args) < 2 {
-			return ErrNoPath
-		}
+			home, err := os.UserHomeDir()
+			if err != nil {
+				return err
+			}
 
-		return os.Chdir(args[1])
+			path = home
+		} else {
+			path = args[1]
+		}
+		return os.Chdir(path)
 
 	case "exit":
 		os.Exit(0)
