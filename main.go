@@ -49,7 +49,7 @@ func execInput(input string) error {
 	cmd := exec.Command(args[0], args[1:]...)
 
 	cmd.Stderr = os.Stderr
-	cmd.Stderr = os.Stdout
+	cmd.Stdout = os.Stdout
 
 	return cmd.Run()
 }
